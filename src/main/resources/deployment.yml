@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-mysql
+spec:
+  selector:
+    matchLabels:
+      app: springboot-mysql
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: springboot-mysql
+    spec:
+      containers:
+      - name: springboot-mysql
+        image: springbootapp:v3
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: db-conf
+              key: host
+
+---
+
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: springboot-mysql
+  labels:
+    name: springboot-mysql
+spec:
+  ports:
+    - nodePort: 30163 
+      port: 8080      
+      targetPort: 8080  
+      protocol: TCP
+  selector:           
+    app: springboot-mysql
+  type: NodePort  
+        

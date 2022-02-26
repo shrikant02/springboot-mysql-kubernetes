@@ -1,0 +1,6 @@
+apiVersion: '3'
+kind: ConfigMap
+metadata:
+  name: db-conf
+data:
+  db_name: demo
